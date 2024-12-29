@@ -1,3 +1,4 @@
 FROM python:3.10
 RUN pip install policyengine flask supabase
-CMD [ "gunicorn -b :$PORT app" ]
+COPY . .
+CMD [ "gunicorn -b :$PORT worker:app" ]
