@@ -1,10 +1,19 @@
 import streamlit as st
 import requests
 import json
+from supabase import create_client, Client
+import os
+from dotenv import load_dotenv
 
 st.title("PolicyEngine API demo")
 
 API = f"http://127.0.0.1:5000"
+
+load_dotenv()
+
+url: str = os.environ.get("SUPABASE_URL")
+key: str = os.environ.get("SUPABASE_KEY")
+supabase: Client = create_client(url, key)
 
 st.write("This is a demo of the PolicyEngine API. You can use this API to compute the impact of public policy.")
 
@@ -32,6 +41,8 @@ if non_default_reform:
 
 time_period = st.selectbox("Select a time period", list(range(2024, 2030)))
 
+path = st.text_input("Calculation path", "")
+
 if st.button("Compute impact"):
     response = requests.post(
         f"{API}/compute",
@@ -41,7 +52,14 @@ if st.button("Compute impact"):
             "data": data,
             "baseline": baseline if non_default_baseline else None,
             "reform": reform if non_default_reform else None,
-            "time_period": time_period
+            "time_period": time_period,
+            "path": path,
         }
     )
-    st.write(response.json())
+
+job_ids = [x["id"] for x in supabase.table("job").select("id").execute().data]
+job = st.selectbox("Job", sorted(job_ids))
+
+result = supabase.table("job").select("*").eq("id", job).execute().data[0]
+
+st.json(result)

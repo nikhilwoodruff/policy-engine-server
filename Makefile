@@ -1,5 +1,5 @@
-debug:
-	FLASK_APP=api/app.py FLASK_DEBUG=True flask run
+debug-api:
+	FLASK_APP=api/app/app.py FLASK_DEBUG=True flask run
 
-debug-compute:
-	FLASK_APP=api/worker.py FLASK_DEBUG=True flask run --port 5001
+debug-worker:
+	FLASK_APP=api/worker/worker.py FLASK_DEBUG=True flask run --port 5001

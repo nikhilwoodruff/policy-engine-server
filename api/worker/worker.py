@@ -47,10 +47,12 @@ def run_compute(job_id):
     }).eq("id", job_id).execute()
 
     try:
+        options = job["options"]
+        path = options.pop("path")
         simulation = Simulation(
-            **job["options"],
+            **options,
         )
-        result = simulation.calculate("/")
+        result = simulation.calculate(path or "/")
         result = safe_json_decode(result)
 
         # Set job status to complete and fill result
