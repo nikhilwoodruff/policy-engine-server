@@ -15,6 +15,12 @@ supabase: Client = create_client(url, key)
 
 app = Flask(__name__)
 
+@app.route("/", methods=["GET"])
+def index():
+    return {
+        "status": "ok"
+    }
+
 @app.route("/compute", methods=["POST"])
 def compute():
     options = request.json
