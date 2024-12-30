@@ -1,0 +1,5 @@
+policyengine
+flask
+supabase
+gunicorn
+python_dotenv

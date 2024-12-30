@@ -37,7 +37,7 @@ def compute():
 
     for job in jobs.data:
         job_id = job["id"]
-        requests.post(f"http://localhost:5001/compute?job_id={job_id}")
+        requests.post(f"https://policyengine-server-70913873059.us-central1.run.app/compute?job_id={job_id}")
 
     return {
         "status": "ok"
