@@ -4,6 +4,7 @@ import os
 from supabase import create_client, Client
 from threading import Thread
 import datetime
+import traceback
 
 url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_KEY")
@@ -67,7 +68,7 @@ def run_compute(job_id):
 
         supabase.table("job").update({
             "status": "error",
-            "result": {"error": str(e)}
+            "result": {"error": traceback.format_exc()}
         }).eq("id", job_id).execute()
 
     print(f"Completed job {job_id}")

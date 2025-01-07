@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 st.title("PolicyEngine API demo")
 
-API = f"http://127.0.0.1:5000"
+API = f"https://policyengine-server-api-70913873059.us-central1.run.app"
 
 load_dotenv()
 
