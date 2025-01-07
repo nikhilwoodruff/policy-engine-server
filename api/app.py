@@ -13,6 +13,9 @@ url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
 
+#WORKER_URL = "https://us-central1-policyengine-api-v2.cloudfunctions.net/policyengine-worker"
+WORKER_URL = "http://127.0.0.1:5001/compute"
+
 app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
@@ -26,18 +29,24 @@ def compute():
     options = request.json
 
     # Add new job to jobs table, status = queued, options=options and get job id
-    supabase.table("job").insert({
+    job = supabase.table("job").insert({
         "status": "queued",
         "options": options,
     }).execute()
 
-    # Run worker/worker.py, in place of aws lambda
+    job_id = job.data[0]["id"]
 
-    os.system("python worker/worker.py")
+    requests.get(f"{WORKER_URL}?job_id={job_id}")
+
+    return {
+        "status": "ok",
+        "job_id": job.data[0]["id"]
+    }
+
+@app.route("/work-on-queue", methods=["GET"])
+def work_on_queue():
+    requests.get(WORKER_URL)
 
     return {
         "status": "ok"
     }
-
-if __name__ == "__main__":
-    app.run(port=os.environ.get("PORT", 8080), host="0.0.0.0")
