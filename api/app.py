@@ -26,18 +26,14 @@ def compute():
     options = request.json
 
     # Add new job to jobs table, status = queued, options=options and get job id
-    job = supabase.table("job").insert({
+    supabase.table("job").insert({
         "status": "queued",
         "options": options,
     }).execute()
 
-    # Find all queued jobs and run them
+    # Run worker/worker.py, in place of aws lambda
 
-    jobs = supabase.table("job").select("*").eq("status", "queued").execute()
-
-    for job in jobs.data:
-        job_id = job["id"]
-        requests.post(f"https://policyengine-server-70913873059.us-central1.run.app/compute?job_id={job_id}")
+    os.system("python worker/worker.py")
 
     return {
         "status": "ok"

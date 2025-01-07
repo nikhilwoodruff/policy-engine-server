@@ -73,12 +73,9 @@ def run_compute(job_id):
 
     print(f"Completed job {job_id}")
 
-@app.route("/compute", methods=["POST"])
 def compute():
-    job_id = request.args.get("job_id")
-    # Start thread to run compute, print to stdout from thread
-    run_compute(job_id)
+    jobs = supabase.table("job").select("*").eq("status", "queued").execute().data
 
-    return {
-        "status": "ok"
-    }
+    if len(jobs) > 0:
+        job_id = jobs[0]["id"]
+        run_compute(job_id)
