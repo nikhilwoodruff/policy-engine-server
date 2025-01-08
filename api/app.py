@@ -1,5 +1,4 @@
 from flask import Flask, request
-from policyengine import Simulation
 import os
 from supabase import create_client, Client
 from threading import Thread
