@@ -12,7 +12,7 @@ url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
 
-WORKER_URL = "https://policyengine-server-worker-70913873059.us-central1.run.app"
+WORKER_URL = "https://policyengine-server-worker-70913873059.us-central1.run.app/compute"
 #WORKER_URL = "http://127.0.0.1:5001/compute"
 
 app = Flask(__name__)
