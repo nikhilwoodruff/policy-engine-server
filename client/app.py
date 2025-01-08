@@ -12,7 +12,7 @@ st.set_page_config(layout="wide")
 
 st.title("PolicyEngine API")
 
-API = f"http://127.0.0.1:5000"
+API = f"https://policyengine-server-api-70913873059.us-central1.run.app"
 
 load_dotenv()
 
