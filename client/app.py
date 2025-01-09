@@ -36,7 +36,7 @@ with left:
     else:
         data = st.selectbox("Select a dataset", {
             "uk": ["enhanced_frs", "frs"],
-            "us": ["enhanced_cps", "cps"]
+            "us": ["enhanced_cps", "cps", "pooled_cps"]
         }[country])
 
     non_default_baseline = st.checkbox("Use non-default baseline")
